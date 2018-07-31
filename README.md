@@ -4,7 +4,7 @@ LIRI is similar to the iPhones SIRI. While SIRI is a Speech Interpretation and R
 
 ## Installs
 
-#### Spotify
+### Spotify
 `npm install spotify`
 
 ### Request
