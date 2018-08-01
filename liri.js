@@ -68,11 +68,11 @@ function liri(action, argument) {
 //==============================
 function getMovieInfo(movieTitle) {
     var queryURL = "http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=short&apikey=trilogy";
-    
+
     request(queryURL, function (error, response, body) {
         if (!error && response.statusCode === 200) {
-
             var movie = JSON.parse(body);
+            console.log(movie); 
 
             // Parse the body of the site and recover just the imdbRating
             console.log("\n------------------------");
@@ -86,6 +86,25 @@ function getMovieInfo(movieTitle) {
             console.log("Plot: " + movie.Plot);
             console.log("Actors: " + movie.Actors);
             console.log("------------------------");
+
+
+
+            // PREPPING FOR FILE LOG
+            var movieData = [
+                "\nMovie Title: " + movie.Title,
+                "Release Year: " + movie.Year,
+                "IMDB Rating: " + movie.imdbRating,
+                "Rotten Tomatoes Rating: " + movie.Ratings[1].Value,
+                "Country Produced In: " + movie.Country,
+                "Language: " + movie.Language,
+                "Plot: " + movie.Plot,
+                "Actors: " + movie.Actors
+
+            ].join("\n\n");
+
+            fs.appendFile("log.txt", movieData, function (err) {
+                if (err) throw (err);
+            })
         }
     })
 }
@@ -104,7 +123,7 @@ function getSongInfo(songTitle) {
         }
 
         var data = data.tracks.items[0];
-        
+
         // print artists, track name, preview url, and album name
         console.log("\n------------------------")
         console.log("Compiling Track Information:");
@@ -113,6 +132,20 @@ function getSongInfo(songTitle) {
         console.log("Spotify Preview URL: " + data.external_urls.spotify);
         console.log("Album name: " + data.album.name);
         console.log("------------------------");
+
+        // PREPPING FOR FILE LOG
+        var songData = [
+            "Artist: " + data.artists[0].name,
+            "Song: " + data.name,
+            "Spotify Preview URL: " + data.external_urls.spotify,
+            "Album name: " + data.album.name
+        ].join("\n\n");
+
+        // APPENDING TO FILE
+        fs.appendFile("log.txt", songData, function (err) {
+            if (err) throw (err);
+        })
+
     })
 };
 
@@ -138,6 +171,18 @@ function defaultSong() {
         console.log("Song: " + data.name);
         console.log("Spotify Preview URL: " + data.external_urls.spotify);
         console.log("Album name: " + data.album.name);
+
+        // PREPPING FOR FILE LOG
+        var songData = [
+            "Artist: " + data.artists[0].name,
+            "Song: " + data.name,
+            "Spotify Preview URL: " + data.external_urls.spotify,
+            "Album name: " + data.album.name
+        ].join("\n\n");
+
+        fs.appendFile("log.txt", songData, function (err) {
+            if (err) throw (err);
+        })
     })
 }
 
@@ -170,3 +215,4 @@ function doWhatItSays() {
 // CALL LIRI
 // ====================
 liri(action, argument);
+
